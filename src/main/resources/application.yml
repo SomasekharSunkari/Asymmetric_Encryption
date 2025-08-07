@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: Security
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product
+    username: sekhar
+    password: sekhar
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform:  org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+app:
+  security:
+    jwt:
+      access-token-expiration: 86400000
+      refresh-token-expiration: 604800000
+    disposable-email: 10minutemail,20minutemail,33mail,5ymail,anonbox,guerrillamail,mailinator,maildrop,mailnesia,moakt,my10minutemail,throwawaymail,trashmail,temp-mail,tempmail,truemail,yopmail
+
