@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: sekhar
       PGDATA: /data/postgres
       POSTGRES_DB: spring_app_db
-    # volumes:
+    # volum:
     #   - postgres:/data/postgres
     ports:
       - "5432:5432"
