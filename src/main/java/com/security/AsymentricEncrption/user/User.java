@@ -16,13 +16,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Entitys
+@Entity
 @Getter
-@Setters
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builders
-@Tabless(name = "USERS")
+@Builder
+@Table(name = "USERS")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
@@ -63,7 +63,7 @@ public class User implements UserDetails {
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE},
     fetch = FetchType.EAGER
     )
-    @JoinTables(
+    @JoinTable(
             name = "USER_ROLES",
             joinColumns = {
                     @JoinColumn(name = "USER_ID")
