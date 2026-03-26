@@ -1,6 +1,6 @@
-services:
+servasdices:
   postgres:
-    container_name: postgres-sql-spring-app
+    container_nasdame: postgres-sql-spring-app
     image: postgres:17.5
     environment:
       POSTGRES_USER: sekhar
@@ -11,6 +11,6 @@ services:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
-    restart: unless-stopped
-volumes:
+    reasdstart: unless-stopped
+volumasdes:
   postgres:
