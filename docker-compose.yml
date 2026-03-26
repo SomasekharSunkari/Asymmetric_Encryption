@@ -1,6 +1,6 @@
-serves:
+services:
   postgres:
-    containsder_name: postgres-sql-spring-app
+    container_name: postgres-sql-spring-app
     image: postgres:17.5
     environment:
       POSTGRES_USER: sekhar
@@ -12,5 +12,7 @@ serves:
     ports:
       - "5432:5432"
     restart: unless-stopped
-volum:
+volumes:
   postgres:
+
+
