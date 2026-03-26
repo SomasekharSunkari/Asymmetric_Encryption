@@ -1,4 +1,4 @@
-services:
+serces:
   postgres:
     container_name: postgres-sql-spring-app
     image: postgres:17.5
@@ -12,5 +12,5 @@ services:
     ports:
       - "5432:5432"
     restart: unless-stopped
-volumes:
+volum:
   postgres:
