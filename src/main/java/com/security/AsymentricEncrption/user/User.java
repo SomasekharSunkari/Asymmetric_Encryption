@@ -16,13 +16,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Entity
+@Entitys
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Table(name = "USERS")
+@Builders
+@Tables(name = "USERS")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
