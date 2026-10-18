@@ -15,16 +15,16 @@
 # }
 
 
-data "aws_vpc" "default-vpc" {
+# data "aws_vpc" "default-vpc" {
 
-  default = true
+#   default = true
 
-}
+# }
 
 data "aws_subnets" "subntes" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.default-vpc.id]
+    values = ["vpc-06eac3af3da91f666"]
   }
 
 }
