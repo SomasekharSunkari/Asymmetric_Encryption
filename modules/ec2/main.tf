@@ -24,13 +24,13 @@ data "aws_vpc" "default-vpc" {
 data "aws_subnets" "subntes" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.default-vpc]
+    values = [data.aws_vpc.default-vpc.id]
   }
 
 }
 
 data "aws_subnet" "subnet" {
-  id = sort(data.aws_subnets.default.ids)[0]
+  id = sort(data.aws_subnets.subntes.ids)[0]
 }
 
 resource "aws_instance" "linux-machine" {
@@ -39,6 +39,7 @@ resource "aws_instance" "linux-machine" {
     Name        = var.name
     Environment = var.Environment
   }
+  ami = data.aws_ami.ubuntu.id
 
   instance_type = var.instance_type
   subnet_id     = data.aws_subnet.subnet.id

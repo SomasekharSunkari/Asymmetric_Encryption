@@ -5,4 +5,6 @@ locals {
   tags = {
     Name = local.Name
   }
+  env = "Dev"
 }
+
