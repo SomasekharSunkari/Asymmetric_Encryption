@@ -29,3 +29,17 @@ jobs:
           aws-region: ap-south-1
           aws-access-key-id: ${{ secrets.ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+  Validate:
+     name: Terraform Validate
+     runs-on: ubuntu-latest
+     steps:
+       - name: terraform validate
+         run: |
+             terraform validate
+  Plan:
+     name: terraform plan
+     runs-on: ubuntu-latest
+     steps:
+       - name: terraform plan
+         run: |
+              terraform plan
