@@ -1,0 +1,16 @@
+name: terraform Deploy
+
+on:
+  push:
+    branches:
+      - terraform
+
+jobs:
+  Checkout:
+    name: Code Checkout
+    runs-on: ubuntu-latest
+
+  Format:
+    name: Terraform Format
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
