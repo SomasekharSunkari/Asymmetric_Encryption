@@ -1,4 +1,3 @@
-
 name: Terraform Deploy
 
 on:
@@ -6,18 +5,21 @@ on:
     branches:
       - terraform
 
+permissions:
+  contents: read
+
 jobs:
-  Checkout:
+  checkout:
     name: Code Checkout
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-  Format:
+  format:
     name: Terraform Format
     runs-on: ubuntu-latest
-    needs: Checkout
+    needs: checkout
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,10 +32,10 @@ jobs:
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
 
-  Validate:
+  validate:
     name: Terraform Validate
     runs-on: ubuntu-latest
-    needs: Format
+    needs: format
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,10 +51,10 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-  Plan:
+  plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
-    needs: Validate
+    needs: validate
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -63,7 +65,7 @@ jobs:
           terraform_version: "1.6.6"
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v6.3.0
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ap-south-1
           aws-access-key-id: ${{ secrets.ACCESS_KEY }}
@@ -73,4 +75,43 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -input=false
+        run: terraform plan -input=false -out=tfplan
+
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: tfplan
+          retention-days: 2
+
+  deploy:
+    name: Terraform Deploy
+    runs-on: ubuntu-latest
+    needs: plan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.6.6"
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-south-1
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Download plan artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan
+          path: .
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
