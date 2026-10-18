@@ -4,4 +4,5 @@ module "ec2_deploy" {
   instance_type = "t3.micro"
   Environment   = local.env
 
+  ami_id = local.ami_id
 }

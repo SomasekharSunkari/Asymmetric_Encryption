@@ -5,6 +5,7 @@ locals {
   tags = {
     Name = local.Name
   }
-  env = "Dev"
+  env    = "Dev"
+  ami_id = "ami-06259b63260eddc13"
 }
 
