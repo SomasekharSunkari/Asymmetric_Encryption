@@ -9,8 +9,15 @@ jobs:
   Checkout:
     name: Code Checkout
     runs-on: ubuntu-latest
+    steps:
+     - name: Checkout
+       uses: actions/checkout@v4
 
   Format:
     name: Terraform Format
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    steps:
+      - name: terraform status
+        run: |
+           terraform --version
