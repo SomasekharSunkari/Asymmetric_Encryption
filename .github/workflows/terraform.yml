@@ -1,4 +1,5 @@
-name: terraform Deploy
+
+name: Terraform Deploy
 
 on:
   push:
@@ -10,36 +11,66 @@ jobs:
     name: Code Checkout
     runs-on: ubuntu-latest
     steps:
-     - name: Checkout
-       uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
   Format:
     name: Terraform Format
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    needs: Checkout
     steps:
-      - name: stepup terraform
-        uses: hashicorp/setup-terraform@v2.0.3
-      - name: terraform status
-        run: |
-           terraform fmt
-      - name: setup aws auth
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.6.6"
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+  Validate:
+    name: Terraform Validate
+    runs-on: ubuntu-latest
+    needs: Format
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.6.6"
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+
+      - name: Terraform Validate
+        run: terraform validate
+
+  Plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    needs: Validate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.6.6"
+
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6.3.0
         with:
           aws-region: ap-south-1
           aws-access-key-id: ${{ secrets.ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.SECRET_KEY }}
-  Validate:
-     name: Terraform Validate
-     runs-on: ubuntu-latest
-     steps:
-       - name: terraform validate
-         run: |
-             terraform validate
-  Plan:
-     name: terraform plan
-     runs-on: ubuntu-latest
-     steps:
-       - name: terraform plan
-         run: |
-              terraform plan
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -input=false
