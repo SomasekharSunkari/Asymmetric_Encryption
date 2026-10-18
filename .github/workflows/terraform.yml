@@ -26,6 +26,6 @@ jobs:
       - name: setup aws auth
         uses: aws-actions/configure-aws-credentials@v6.3.0
         with:
-          region: ap-south-1
+          aws-region: ap-south-1
           aws-access-key-id: ${{ secrets.ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.SECRET_KEY }}
